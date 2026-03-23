@@ -28,6 +28,7 @@ def run_command(command):
         return None
 
 def main():
+    current_year = datetime.datetime.now().year  # 👈 加在这里！
     update_heatmap("OUT_FOLDER",notion_helper.heatmap_block_id)
     types = notion_helper.query_all(notion_helper.type_database_id)
     for type in types:
@@ -37,7 +38,7 @@ def main():
         unit = get_property_value(type.get("properties").get("单位"))
         print(unit)
         database_filter = f'{{"property": "运动类型", "relation": {{"contains": "{page_id}"}}}}'
-        command = f'github_heatmap notion --notion_token {notion_token} --database_id {notion_helper.workout_database_id} --database_filter \'{database_filter}\' --date_prop_name 开始时间 --value_prop_name 值 --unit {unit} --year 2026 --me {title} --without-type-name --background-color=#FFFFFF --track-color=#ACE7AE --special-color1=#69C16E --special-color2=#549F57 --dom-color=#EBEDF0 --text-color=#000000'
+        command = f'github_heatmap notion --notion_token {notion_token} --database_id {notion_helper.workout_database_id} --database_filter \'{database_filter}\' --date_prop_name 开始时间 --value_prop_name 值 --unit {unit} --year {current_year} --me {title} --without-type-name --background-color=#FFFFFF --track-color=#ACE7AE --special-color1=#69C16E --special-color2=#549F57 --dom-color=#EBEDF0 --text-color=#000000'
         run_command(command)
         # 创建以title命名的文件夹
         hash_object = hashlib.sha256(title.encode('utf-8'))
